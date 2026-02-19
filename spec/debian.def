@@ -1,0 +1,25 @@
+Bootstrap: docker
+From: debian:{{version}}
+
+%arguments
+  version=13.3
+
+%post
+  apt-get update
+
+  apt-get -y upgrade
+
+  apt-get -y install --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    curl \
+    libbz2-dev \
+    libcurl4-gnutls-dev \
+    liblzma-dev \
+    zlib1g-dev
+
+  apt-get clean
+
+  /bin/rm -rf \
+    /var/cache/apt/archives \
+    /var/lib/apt/lists/*

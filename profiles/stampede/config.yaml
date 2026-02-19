@@ -1,0 +1,8 @@
+executor: slurm
+default-resources:
+  slurm_account: epi
+  slurm_partition: stampede01
+  runtime: 4h
+  mem: 10G
+jobs: 100
+max-jobs-per-second: 1

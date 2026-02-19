@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+snake_v=${1:-"9.16.3"} # 9.16.3 released 2026-02-05
+
+tgt=${HOME}/opt/snake/${snake_v}
+
+miniforge_sh=\
+https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+
+curl -sSL ${miniforge_sh} > ${HOME}/miniforge.sh
+
+sh ${HOME}/miniforge.sh -b -p ${tgt} \
+  && /bin/rm ${HOME}/miniforge.sh
+
+${tgt}/bin/conda create -y -c bioconda -n main snakemake=${snake_v}
+
+${tgt}/envs/main/bin/pip install snakemake-executor-plugin-slurm
+
+echo
+echo ${tgt}/envs/main/bin/snakemake --version | sh -x
+echo
+
+echo "-----------------------------------------------------------------------------------------------"
+echo "snakemake w/ slurm successfully installed"
+echo "-----------------------------------------------------------------------------------------------"
+echo "Add the line:"
+echo
+echo "export PATH=\$PATH:${tgt}/envs/main/bin"
+echo
+echo "to your \$HOME/.bashrc"

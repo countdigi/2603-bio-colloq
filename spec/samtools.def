@@ -1,0 +1,23 @@
+Bootstrap: localimage
+From: {{base}}
+
+%arguments
+  base=tmp/img/debian/13.3.sif
+  version=1.23
+
+%post
+  curl -sSL \
+    https://github.com/samtools/samtools/releases/download/{{version}}/samtools-{{version}}.tar.bz2 \
+  | tar jxf -
+
+  cd samtools-{{version}}
+
+  ./configure --without-curses
+
+  make -j $(nproc)
+  make test
+  make install
+
+  cd -
+
+  /bin/rm -rf samtools-{{version}}
